@@ -70,7 +70,8 @@ module.exports = function(grunt) {
       options = this.options({
         cleanTargetDir: false,
         cleanBowerDir: false,
-        targetDir: './lib',
+        //bowerDir: './bower_components', // if missing then default to .bowerrc.directory
+        //targetDir: './lib', // if missing then default to bowerdir defined above.
         layout: 'byType',
         install: true,
         verbose: false,
@@ -93,8 +94,9 @@ module.exports = function(grunt) {
     // at all
     requireDependencies();
 
-    bowerDir = path.resolve(bower.config.directory);
-    targetDir = path.resolve(options.targetDir);
+
+    bowerDir = !!options.bowerDir ? path.resolve(options.bowerDir) : path.resolve(bower.config.directory);
+    targetDir = !!options.targetDir ? path.resolve(options.targetDir) : bowerDir;
 
     log.logger = options.verbose ? grunt.log : grunt.verbose;
     options.layout = LayoutsManager.getLayout(options.layout, fail);
